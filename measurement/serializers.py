@@ -13,9 +13,10 @@ class SensorSerializer(serializers.ModelSerializer):
 
 
 class MeasurementSerializer(serializers.ModelSerializer):
+    time_create = serializers.DateTimeField(read_only=True)
     class Meta:
         model = Measurement
-        fields = ['sensor', 'temperature']
+        fields = ['sensor', 'temperature', 'time_create']
 
 
 class MeasurementDetailSerializer(serializers.ModelSerializer):

@@ -34,18 +34,17 @@ class SensorDetailView(APIView):
 
     def get(self, request, a):
         sensor = get_object_or_404(Sensor, pk=a)
-        ser = SensorDetailSerializer(sensor, many=True)
-        return Response({'post': model_to_dict(ser)})
+        ser = SensorDetailSerializer(sensor)
+        return Response(ser.data)
 
 
 class MeasurementsView(APIView):
     def post(self, request):
-        sensor = get_object_or_404(Sensor, pk=request.data['sensor'])
-        post_new_temp = Measurement.objects.create(
-            sensor=sensor,
-            temperature=request.data['temperature']
-        )
-        return Response({'post': model_to_dict(post_new_temp)})
+        serializer = MeasurementSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
-
+    qw
 
